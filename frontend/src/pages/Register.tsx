@@ -15,7 +15,8 @@ export type RegisterFormData = {
 const Register = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const {showToast} = useAppContext();
+  const { showToast } = useAppContext();
+
   const {
     register,
     watch,
@@ -24,19 +25,13 @@ const Register = () => {
   } = useForm<RegisterFormData>();
 
   const mutation = useMutation(apiClient.register, {
-    onSuccess:async () => {
-      showToast({
-        message: "Account created successfully",
-        type: "SUCCESS",
-      });
+    onSuccess: async () => {
+      showToast({ message: "Registration Success!", type: "SUCCESS" });
       await queryClient.invalidateQueries("validateToken");
       navigate("/");
     },
     onError: (error: Error) => {
-      showToast({
-        message: error.message,
-        type: "ERROR",
-      });
+      showToast({ message: error.message, type: "ERROR" });
     },
   });
 
@@ -55,9 +50,7 @@ const Register = () => {
             {...register("firstName", { required: "This field is required" })}
           ></input>
           {errors.firstName && (
-            <span className="text-red-500 text-sm">
-              {errors.firstName.message}
-            </span>
+            <span className="text-red-500">{errors.firstName.message}</span>
           )}
         </label>
         <label className="text-gray-700 text-sm font-bold flex-1">
@@ -67,9 +60,7 @@ const Register = () => {
             {...register("lastName", { required: "This field is required" })}
           ></input>
           {errors.lastName && (
-            <span className="text-red-500 text-sm">
-              {errors.lastName.message}
-            </span>
+            <span className="text-red-500">{errors.lastName.message}</span>
           )}
         </label>
       </div>
@@ -81,7 +72,7 @@ const Register = () => {
           {...register("email", { required: "This field is required" })}
         ></input>
         {errors.email && (
-          <span className="text-red-500 text-sm">{errors.email.message}</span>
+          <span className="text-red-500">{errors.email.message}</span>
         )}
       </label>
       <label className="text-gray-700 text-sm font-bold flex-1">
@@ -93,14 +84,12 @@ const Register = () => {
             required: "This field is required",
             minLength: {
               value: 6,
-              message: "Password must be at least 6 characters long",
+              message: "Password must be at least 6 characters",
             },
           })}
         ></input>
         {errors.password && (
-          <span className="text-red-500 text-sm">
-            {errors.password.message}
-          </span>
+          <span className="text-red-500">{errors.password.message}</span>
         )}
       </label>
       <label className="text-gray-700 text-sm font-bold flex-1">
@@ -113,23 +102,20 @@ const Register = () => {
               if (!val) {
                 return "This field is required";
               } else if (watch("password") !== val) {
-                return "Passwords do not match";
+                return "Your passwords do no match";
               }
             },
           })}
         ></input>
         {errors.confirmPassword && (
-          <span className="text-red-500 text-sm">
-            {errors.confirmPassword.message}
-          </span>
+          <span className="text-red-500">{errors.confirmPassword.message}</span>
         )}
       </label>
       <span>
         <button
           type="submit"
-          className="bg-blue-600 text-white p-2 rounded font-bold hover:bg-blue-500 text-xl"
+          className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl"
         >
-          {" "}
           Create Account
         </button>
       </span>
